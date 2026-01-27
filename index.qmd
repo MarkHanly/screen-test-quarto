@@ -1,0 +1,12 @@
+---
+title: "Screen test"
+navbar: false
+---
+
+## Study title
+
+_Study Author 1_ | _Study Author 2_ | _Study Author 3_ 
+
+<img src="https://picsum.photos/200/300">
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit Quisque tellus urna placerat in tortor ac imperdiet sollicitudin mi Integer vel dolor mollis feugiat sem eu porttitor elit Sed aliquam urna sed placerat euismod In risus sem ornare nec malesuada eu ornare quis dui Nunc finibus fermentum sollicitudin Fusce vel imperdiet mi ac faucibus leo Cras massa massa ultricies et justo vitae molestie auctor turpis Vestibulum euismod porta risus euismod dapibus Nullam facilisis ipsum sed est tempor et aliquam sapien auctor Aliquam velit ligula convallis a dui id varius bibendum quam Cras malesuada nec justo sed aliquet Fusce urna magna malesuada

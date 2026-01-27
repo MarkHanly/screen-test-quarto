@@ -1,0 +1,23 @@
+project:
+  type: website
+
+website:
+  title: "screen-test-quarto"
+  navbar:
+    title: false
+    left:
+      - href: index.qmd
+        text: Home
+      - app.qmd
+  page-footer:
+    left: "[Home](index.html)"
+    right: "[App](app.html)"
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: false
+
+
+

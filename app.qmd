@@ -1,0 +1,11 @@
+---
+navbar: false
+format: 
+  html: 
+    page-layout: full
+---
+
+<iframe
+  src="https://cbdrh.shinyapps.io/screen-test/"
+  style="width:100vw; height:100dvh; border:0;"
+></iframe>

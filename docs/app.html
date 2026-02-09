@@ -506,14 +506,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
-    // --- Kiosk idle ping to parent wrapper ---
+
+  // --- Kiosk idle ping to parent wrapper ---
   (function () {
-    const TARGET_ORIGIN = "https://markhanly.github.io";
     let last = 0;
 
     function post() {
       if (window.parent && window.parent !== window) {
-        window.parent.postMessage("user-active", TARGET_ORIGIN);
+        // Parent is file:// (origin null), so targetOrigin must be "*"
+        window.parent.postMessage("user-active", "*");
       }
     }
 
@@ -524,33 +525,26 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       post();
     }
 
-    // User interaction on this document (works outside nested iframes)
+    // Interactions on this document
     ["click","touchstart","touchmove","pointerdown","pointermove","keydown","wheel","scroll"].forEach((evt) => {
       document.addEventListener(evt, ping, { passive: true, capture: true });
     });
 
-    // Fallback: while the tab is visible, send a heartbeat occasionally.
-    // This helps when user interacts only inside the nested Shiny iframe.
-    let heartbeat = null;
-    function startHeartbeat() {
-      if (heartbeat) return;
-      heartbeat = setInterval(post, 3000); // every 3s
-    }
-    function stopHeartbeat() {
-      if (!heartbeat) return;
-      clearInterval(heartbeat);
-      heartbeat = null;
-    }
+    // Heartbeat fallback (helps when user interacts mainly inside the Shiny iframe)
+    let heartbeat = setInterval(post, 1000);
 
     document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible") startHeartbeat();
-      else stopHeartbeat();
+      if (document.visibilityState === "visible" && !heartbeat) {
+        heartbeat = setInterval(post, 1000);
+      } else if (document.visibilityState !== "visible" && heartbeat) {
+        clearInterval(heartbeat);
+        heartbeat = null;
+      }
     });
 
-    // Start now
     ping();
-    startHeartbeat();
   })();
+
 });
 </script>
 </div> <!-- /content -->

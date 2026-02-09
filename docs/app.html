@@ -507,44 +507,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 
-  // --- Kiosk idle ping to parent wrapper ---
+  // --- Kiosk idle ping to parent wrapper (no heartbeat) ---
   (function () {
     let last = 0;
-
-    function post() {
-      if (window.parent && window.parent !== window) {
-        // Parent is file:// (origin null), so targetOrigin must be "*"
-        window.parent.postMessage("user-active", "*");
-      }
-    }
-
+  
     function ping() {
       const now = Date.now();
       if (now - last < 200) return; // throttle
       last = now;
-      post();
+  
+      if (window.parent && window.parent !== window) {
+        // parent is file:// => must be "*"
+        window.parent.postMessage("user-active", "*");
+      }
     }
-
-    // Interactions on this document
+  
     ["click","touchstart","touchmove","pointerdown","pointermove","keydown","wheel","scroll"].forEach((evt) => {
       document.addEventListener(evt, ping, { passive: true, capture: true });
     });
-
-    // Heartbeat fallback (helps when user interacts mainly inside the Shiny iframe)
-    let heartbeat = setInterval(post, 1000);
-
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible" && !heartbeat) {
-        heartbeat = setInterval(post, 1000);
-      } else if (document.visibilityState !== "visible" && heartbeat) {
-        clearInterval(heartbeat);
-        heartbeat = null;
-      }
-    });
-
+  
+    // optional: ping once on load (doesn't keep it alive)
     ping();
   })();
-
+  
 });
 </script>
 </div> <!-- /content -->

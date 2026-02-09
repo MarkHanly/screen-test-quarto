@@ -506,30 +506,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
-
-  // --- Kiosk idle ping to parent wrapper (no heartbeat) ---
-  (function () {
-    let last = 0;
-  
-    function ping() {
-      const now = Date.now();
-      if (now - last < 200) return; // throttle
-      last = now;
-  
-      if (window.parent && window.parent !== window) {
-        // parent is file:// => must be "*"
-        window.parent.postMessage("user-active", "*");
-      }
-    }
-  
-    ["click","touchstart","touchmove","pointerdown","pointermove","keydown","wheel","scroll"].forEach((evt) => {
-      document.addEventListener(evt, ping, { passive: true, capture: true });
-    });
-  
-    // optional: ping once on load (doesn't keep it alive)
-    ping();
-  })();
-  
 });
 </script>
 </div> <!-- /content -->
